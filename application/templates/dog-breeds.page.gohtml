@@ -1,0 +1,85 @@
+{{ template "base" . }}
+
+
+{{ define "css"}}
+  <link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+{{ end }}
+
+{{ define "content"}}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h3 class="mt-4">Dog Breeds</h3>
+      <hr>
+
+      <table class="dog-breeds table table-striped table-compact">
+        <thead>
+          <tr>
+            <th>Details</th>
+            <th>Breed</th>
+            <th></th>
+            <th></th>
+            <th>
+              <div class="text-center">Avg Lbs</div>
+            </th>
+            <th>
+              <div class="text-center">Avg Lifespan</div>
+            </th>
+            <th></th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+{{ end }}
+
+
+{{ define "js" }}
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    console.log('dog breeds');
+    fetch("/api/dog-breeds")
+      .then(res => res.json())
+      .then(res => {
+        if (!res.length) {
+          return;
+        }
+        new window.simpleDatatables.DataTable(".dog-breeds", {
+          perPage: 25,
+          columns: [
+            {
+              select: 1,
+              render: function (data, td, rowIndex, cellIndex) {
+                return `<a href="/dog-breeds/${res[rowIndex].id}">${data[0].data}`
+              }
+            },
+            {
+              select: 4,
+              render: function (data, td, rowIndex, cellIndex) {
+                return `<div class="text-center">${data[0].data}</div>`
+              }
+            },
+            {
+              select: 5,
+              render: function (data, td, rowIndex, cellIndex) {
+                return `<div class="text-center">${data[0].data}</div>`
+              }
+            },
+            {select: [0, 2, 3, 6, 7, 8], hidden: true}
+          ],
+          data: {
+            data: res.map(item => Object.values(item))
+          }
+        })
+      }
+      )
+  });
+
+</script>
+{{ end }}

@@ -1,0 +1,204 @@
+{{ template "base" . }}
+
+
+{{ define "content"}}
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="mt-4"></h1>
+      <hr>
+      <h3>Factory</h3>
+      <div>
+        <a href="javascript:void(0);" id="dog-factory-btn" class="btn btn-outline-secondary">Get Dog</a>
+        <a href="javascript:void(0);" id="cat-factory-btn" class="btn btn-outline-secondary">Get Cat</a>
+      </div>
+      <div class="mt-2" style="outline; 1px solid silver; padding:2em;">
+        <pre id="factory-output">
+          <span>nothing yet...</span>
+        </pre>
+      </div>
+
+      <hr class="mt-4">
+      <h3>Abstract Factory</h3>
+      <div>
+        <a href="javascript:void(0);" id="dog-afactory-btn" class="btn btn-outline-secondary">Get Dog</a>
+        <a href="javascript:void(0);" id="cat-afactory-btn" class="btn btn-outline-secondary">Get Cat</a>
+      </div>
+      <div class="mt-2" style="outline; 1px solid silver; padding:2em;">
+        <pre id="afactory-output">
+          <span>nothing yet...</span>
+        </pre>
+      </div>
+      <hr class="mt-4">
+      <h3>Builder</h3>
+      <div>
+        <a href="javascript:void(0);" id="dog-builder-btn" class="btn btn-outline-secondary">Get Dog</a>
+        <a href="javascript:void(0);" id="cat-builder-btn" class="btn btn-outline-secondary">Get Cat</a>
+      </div>
+      <div class="mt-2" style="outline; 1px solid silver; padding:2em;">
+        <pre id="builder-output">
+          <span>nothing yet...</span>
+        </pre>
+      </div>
+
+      <hr class="mt-4">
+      <h3>Factory with Adapter</h3>
+      <form>
+        <div class="row mb-3">
+          <label for="species" class="col-sm-2 col-form-label">Species</label>
+          <select id="species" class="form-select">
+            <option selected>Choose..</option>
+            <option value="cat">Cat</option>
+            <option value="dog">Dog</option>
+          </select>
+        </div>
+        <div class="row mb-3">
+          <label for="breed" class="col-sm-2 col-form-label">Breed</label>
+          <input type="text" class="form-control" id="breeds">
+        </div>
+      </form>
+      <div>
+        <a href="javascript:void(0);" id="fapter-btn" class="btn btn-outline-secondary">Get Pet</a>
+      </div>
+      <div class="mt-2" style="outline; 1px solid silver; padding:2em;">
+        <pre id="fapter-output">
+          <span>nothing yet...</span>
+        </pre>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{{ end }}
+
+
+{{ define "js" }}
+<script>
+  let dogButton = document.getElementById("dog-factory-btn");
+  let catButton = document.getElementById("cat-factory-btn");
+  let output = document.getElementById("factory-output");
+
+  let dogAButton = document.getElementById("dog-afactory-btn");
+  let catAButton = document.getElementById("cat-afactory-btn");
+  let aOutput = document.getElementById("afactory-output");
+
+  let dogBuilderBtn = document.getElementById("dog-builder-btn");
+  let catBuilderBtn = document.getElementById("cat-builder-btn");
+  let builderOutput = document.getElementById("builder-output");
+
+  let fapterButton = document.getElementById("fapter-btn");
+  let fapterOutput = document.getElementById("fapter-output");
+
+  document.addEventListener("DOMContentLoaded", function () {
+    dogButton.addEventListener("click", function () {
+      fetch("/api/dog-from-factory", {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            output.innerHTML = data.error;
+            console.error('dog.error', data.error);
+          } else {
+            console.log('dog', data);
+            output.innerHTML = JSON.stringify(data, undefined, 4);
+          }
+        });
+
+    });
+
+    catButton.addEventListener("click", function () {
+      fetch("/api/cat-from-factory", {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            console.error('cat.error', data.error);
+            output.innerHTML = data.error;
+          } else {
+            console.log('cat', data);
+            output.innerHTML = JSON.stringify(data, undefined, 4);
+
+          }
+        });
+
+    });
+
+
+    dogAButton.addEventListener("click", function () {
+      fetch("/api/dog-from-afactory", {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            console.error('dogA.error', data.error);
+            aOutput.innerHTML = data.error;
+          } else {
+            console.log('dogA', data);
+            aOutput.innerHTML = JSON.stringify(data, undefined, 4);
+          }
+        });
+    });
+
+    catAButton.addEventListener("click", function () {
+      fetch("/api/cat-from-afactory", {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            console.error('cata.error', data.error);
+            aOutput.innerHTML = data.error;
+          } else {
+            console.log('cata', data);
+            aOutput.innerHTML = JSON.stringify(data, undefined, 4);
+          }
+        });
+    });
+
+    dogBuilderBtn.addEventListener("click", function () {
+      fetch("/api/dog-from-builder", {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            builderOutput.innerHTML = data.error;
+            console.error('dog.error', data.error);
+          } else {
+            console.log('dog', data);
+            builderOutput.innerHTML = JSON.stringify(data, undefined, 4);
+          }
+        });
+    });
+
+    catBuilderBtn.addEventListener("click", function () {
+      fetch("/api/cat-from-builder", {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            console.error('cat.error', data.error);
+            builderOutput.innerHTML = data.error;
+          } else {
+            console.log('cat', data);
+            builderOutput.innerHTML = JSON.stringify(data, undefined, 4);
+
+          }
+        });
+
+    });
+
+    fapterButton.addEventListener("click", function () {
+      let species = document.getElementById("species").value;
+      let breed = document.getElementById("breeds").value;
+      console.log("species", species, "breed", breed);
+      fetch(`/api/animal-from-factory/${species}/${breed}`, {method: 'get'})
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.error) {
+            fapterOutput.innerHTML = data.error;
+            console.error('dog.error', data.error);
+          } else {
+            console.log('dog', data);
+            fapterOutput.innerHTML = JSON.stringify(data, undefined, 4);
+          }
+        });
+    });
+
+  });
+
+</script>
+{{ end }}

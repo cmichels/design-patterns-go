@@ -1,0 +1,7 @@
+application/db-data/mariadb
+application/.DS_Store
+application/web
+worker-pool/app/output
+worker-pool/app/.DS_Store
+worker-pool/.DS_Store
+.DS_Store
